@@ -44,9 +44,37 @@ Note: the hardware was connected solderlessly using 30 AWG wire ('blue wire') an
 
 TODO: Fritzing img
 
-## SETUP
-
 ## TUTORIAL
+
+TODO intro
+
+### Message Broker
+
+TODO - describe 2 options
+
+#### MQTT Test Broker
+
+TODO
+
+#### AWS MQTT Broker
+
+TODO
+
+### Design Control
+Load the mdzip file contained in the [Design Control directory](/control_design/)
+![design control](img/design_control.jpg)
+
+TODO Cameo tutorial 1: opaque actions
+
+TODO Cameo tutorial 2: plugin for MQTT
+
+### Software Control
+
+TODO ruby setup on wsl and config/run
+
+### Hardware Control
+
+TODO flash firmware to ESP-32 via VS code plugin
 
 ## DEMO
 
