@@ -34,6 +34,8 @@ Note: the hardware was connected solderlessly using 30 AWG wire ('blue wire') an
 
 ## KIT PURCHASE
 
+TODO
+
 ## ASSEMBLY
 ![project bluewire](img/bluewire_assembled.jpg)
 
@@ -75,6 +77,8 @@ TODO ruby setup on wsl and config/run
 ### Hardware Control
 
 TODO flash firmware to ESP-32 via VS code plugin
+
+[Visual Studio Code - PlatformIO ESP-32](https://docs.platformio.org/en/latest/platforms/espressif32.html)
 
 ## DEMO
 
