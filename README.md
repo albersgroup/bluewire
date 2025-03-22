@@ -38,6 +38,7 @@ TODO
 
 ## ASSEMBLY
 ![project bluewire](img/bluewire_assembled.jpg)
+*rev1 of the project bluewire case*
 
 * Reference STL files in [Case Design directory](/hardware_case/)
 * Purchase parts referenced in HARDWARE BOM section above
@@ -66,12 +67,6 @@ Configure and deploy an MQTT broker using a service such as AWS ECS or similar. 
 
 https://www.atom8.ai/blog/how-to-deploy-mqtt-broker-using-eclipse-mosquitto-on-amazon-ecs
 
-### Design Control
-Load the mdzip file contained in the [Design Control directory](/control_design/)
-![design control](img/design_control.jpg)
-
-TODO Cameo tutorial 1: opaque actions
-
 ### Software Control
 
 To execute the ruby scripts, you need a version of ruby installed.  On mac or linux, use a package manager to install ruby.  On windows, it's recommended to setup wsl and install ruby on a Ubuntu VM.
@@ -87,6 +82,13 @@ $ ruby retainControlPublish.rb
 $ ruby retainValuePublish.rb
 $ ruby monitor.rb
 ```
+
+### Design Control
+* Ensure the 'Web Server for Cameo Simulation Toolkit' plugin is installed (restart Cameo after installation)
+* Load the mdzip file contained in the [Design Control directory](/control_design/)
+![design control](img/design_control.jpg)
+* Ensure the Default Values of the control topic and value topic properties on the system are set correctly for your company/project name.
+* Launch the simulation configuration
 
 ### Hardware Control
 
