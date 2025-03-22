@@ -34,7 +34,13 @@ Note: the hardware was connected solderlessly using 30 AWG wire ('blue wire') an
 
 ## KIT PURCHASE
 
-TODO
+3 kit options are available for purchase if you reach out to us using the contact information at the bottom of this page.
+
+* Option 1: unassembled kit only
+* Option 2: pre-assembled kit
+* Option 3: unassembled + pre-assembled kit (2 kits total) + 2 engineering consulting sessions with our team
+
+The unassembled kit included in options 1 and 3 will include a wire wrap tool along with enough 30 AWG wire to assemble the kit.  It will have threaded inserts inset in the case material for ease of assembly.  The kits will come with the necessary connecting hardware.
 
 ## ASSEMBLY
 ![project bluewire](img/bluewire_assembled.jpg)
