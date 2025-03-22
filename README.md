@@ -48,19 +48,23 @@ TODO: Fritzing img
 
 ## TUTORIAL
 
-TODO intro
+This guide will walk through options and steps for setting up a minimal example completing the objective laid out in the overview above.
 
 ### Message Broker
 
-TODO - describe 2 options
+For initial testing, everything is configured to use the MQTT test broker, as described in the first section.  For more serious applications past testing, it is recommended to stand up a production MQTT broker.  One quick option is described in the guide below.
 
 #### MQTT Test Broker
 
-TODO
+By default, the software/firmware code and the Cameo model are configured to use the test.mosquitto.org server.  Be aware, it is flaky and not for use in production environments.
+
+Please see: https://test.mosquitto.org/ for more information.
 
 #### AWS MQTT Broker
 
-TODO
+Configure and deploy an MQTT broker using a service such as AWS ECS or similar.  An example tutorial is linked below:
+
+https://www.atom8.ai/blog/how-to-deploy-mqtt-broker-using-eclipse-mosquitto-on-amazon-ecs
 
 ### Design Control
 Load the mdzip file contained in the [Design Control directory](/control_design/)
@@ -68,18 +72,34 @@ Load the mdzip file contained in the [Design Control directory](/control_design/
 
 TODO Cameo tutorial 1: opaque actions
 
-TODO Cameo tutorial 2: plugin for MQTT
-
 ### Software Control
 
-TODO ruby setup on wsl and config/run
+To execute the ruby scripts, you need a version of ruby installed.  On mac or linux, use a package manager to install ruby.  On windows, it's recommended to setup wsl and install ruby on a Ubuntu VM.
+
+From the scripts in the [Software Control directory](/control_software/), edit and run the two pubsish scripts and then the monitor script.
+
+Replace 'company/name' in the scripts with the name of your company and project (e.g., 'acme/abc' for project abc at company acme).
+
+Execute the scripts directly (after installing the 'mqtt' gem)
+```console
+$ gem install mqtt
+$ ruby retainControlPublish.rb
+$ ruby retainValuePublish.rb
+$ ruby monitor.rb
+```
 
 ### Hardware Control
 
-TODO flash firmware to ESP-32 via VS code plugin
+Flash firmware from the ESP-32 project located in the [Hardware Control directory](/control_hardware/) directory via the PlatformIO VS code plugin linked below.
 
 [Visual Studio Code - PlatformIO ESP-32](https://docs.platformio.org/en/latest/platforms/espressif32.html)
 
 ## DEMO
 
+If you would like a demonstration of the interaction between design, hardware, and software, see the contact section below and we'll find a time that to connect.
+
 ## CONTACT
+
+Please reach out if we can be of assistance in helping you accelerate digital engineering adoption.
+
+defense [at] albers.aero
