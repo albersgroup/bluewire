@@ -2,7 +2,7 @@
 
 # project bluewire
 
-## OVERVIEW
+## PROJECT OVERVIEW
 
 This is the project repository for a simplified demonstration of:
 * Message broker
@@ -21,6 +21,10 @@ This implementation uses MQTT for the message broker, COTS hardware with an ESP-
 The MQTT message broker has 2 active topics - one for showing whether CAMEO or REMOTE has control of the broker (the control topic) and the other for storing the value reading.
 
 The MQTT publishers set the 'retain' flag on the messages to ensure that when clients connect, they receive the latest message published to the topic.  The ruby scripts are utilized to initialize the values on the topics.
+
+## INTEGRATION ENGINEERING
+
+Use your team - multiple disciplines of engineering particpated in this project.  Electrical, Software, Mechanical, plus a touch of all-around Linux/dev-ops are all needed at times.  If you find a single engineer that can take this repository and stand up the 4 aspects listed in the project overview, you've got some of the most unique 5% of talent in the top 20% of engineers out there.  What's even better is when a person like that can work with a team to accelerate and develop others.  We hope this project helps activate that kind of teamwork and sharpens all engineers involved.
 
 ## HARDWARE BOM
 * [ESP-32 Microcontroller](https://www.amazon.com/gp/product/B0D8T53CQ5/ref=ppx_od_dt_b_asin_title_s02?ie=UTF8&psc=1)
@@ -41,13 +45,13 @@ The MQTT publishers set the 'retain' flag on the messages to ensure that when cl
 
 ## KIT PURCHASE
 
-3 kit options are available for purchase if you reach out to us using the contact information at the bottom of this page.
+3 kit options are available for purchase if you reach out to us using the contact information at the bottom of this page.  Kit purchase not required - all information for purchasing the components in the kits is available in this repository.  If you prefer the convinience of it all in a box for you, or pre-assembled, please reach out and we'll get you on the list.
 
 * Option 1: unassembled kit only
 * Option 2: pre-assembled kit
 * Option 3: unassembled + pre-assembled kit (2 kits total) + 2 engineering consulting sessions with our team
 
-The unassembled kit included in options 1 and 3 will include a wire wrap tool along with enough 30 AWG wire to assemble the kit.  It will have threaded inserts inset in the case material for ease of assembly.  The kits will come with the necessary connecting hardware.
+The unassembled kit included in options 1 and 3 include a wire wrap tool along with enough 30 AWG wire to assemble the kit.  Threaded inserts inset in the case material for kits for ease of assembly.  The kits come with the necessary connecting hardware.
 
 ## ASSEMBLY
 ![project bluewire](img/bluewire_assembled.jpg)
@@ -62,7 +66,7 @@ TODO: Fritzing img
 
 ## TUTORIAL
 
-This guide will walk through options and steps for setting up a minimal example completing the objective laid out in the overview above.
+The guides in the sections linked below will walk through options and steps for setting up a minimal example completing the objective laid out in the project overview.
 
 ### Message Broker
 
@@ -82,32 +86,15 @@ https://www.atom8.ai/blog/how-to-deploy-mqtt-broker-using-eclipse-mosquitto-on-a
 
 ### Software Control
 
-To execute the ruby scripts, you need a version of ruby installed.  On mac or linux, use a package manager to install ruby.  On windows, it's recommended to setup wsl and install ruby on a Ubuntu VM.
-
-From the scripts in the [Software Control directory](/control_software/), edit and run the two pubsish scripts and then the monitor script.
-
-Replace 'company/name' in the scripts with the name of your company and project (e.g., 'acme/abc' for project abc at company acme).
-
-Execute the scripts directly (after installing the 'mqtt' gem)
-```console
-$ gem install mqtt
-$ ruby retainControlPublish.rb
-$ ruby retainValuePublish.rb
-$ ruby monitor.rb
-```
+Please view the README in the [Software Control directory](/control_software/).
 
 ### Design Control
-* Ensure the 'Web Server for Cameo Simulation Toolkit' plugin is installed (restart Cameo after installation)
-* Load the mdzip file contained in the [Design Control directory](/control_design/)
-![design control](img/design_control.jpg)
-* Ensure the Default Values of the control topic and value topic properties on the system are set correctly for your company/project name.
-* Launch the simulation configuration
+
+Please view the README in the [Design Control directory](/control_design/).
 
 ### Hardware Control
 
-Flash firmware from the ESP-32 project located in the [Hardware Control directory](/control_hardware/) directory via the PlatformIO VS code plugin linked below.
-
-[Visual Studio Code - PlatformIO ESP-32](https://docs.platformio.org/en/latest/platforms/espressif32.html)
+Please view the readme in the [Hardware Control directory](/control_hardware/).
 
 ## DEMO
 
