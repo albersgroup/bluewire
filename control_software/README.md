@@ -1,3 +1,5 @@
+![project bluewire](../img/bluewire_logo_alt2.jpg)
+
 # SOFTWARE CONTROL
 
 To execute the ruby scripts, you need a version of ruby installed.  On mac or linux, use a package manager to install ruby.  On windows, it's recommended to setup wsl and install ruby on a Ubuntu VM.

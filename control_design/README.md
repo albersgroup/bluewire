@@ -1,3 +1,5 @@
+![project bluewire](../img/bluewire_logo_alt2.jpg)
+
 # Design Control
 
 * Ensure the 'Web Server for Cameo Simulation Toolkit' plugin is installed (restart Cameo after installation)
