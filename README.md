@@ -28,9 +28,16 @@ The MQTT publishers set the 'retain' flag on the messages to ensure that when cl
 * [Battery Shield](https://www.amazon.com/dp/B0CJR1Y967?ref_=ppx_hzsearch_conn_dt_b_fed_asin_title_5&th=1)
 * [Battery](https://www.amazon.com/dp/B0CDRBR2M1?ref_=ppx_hzsearch_conn_dt_b_fed_asin_title_6)
 
-TODO: add screw and hex nut sizes and link to purchase
+---
+**NOTE:**
 
-Note: the hardware was connected solderlessly using 30 AWG wire ('blue wire') and a wire-wrapping tool.
+1) The electronic hardware was connected solderlessly using 30 AWG wire ('blue wire') and a wire-wrapping tool.
+
+2) M3x16mm screws [from a kit similar to this one](https://www.amazon.com/mxuteuk-Metric-Screws-Suitable-Printer/dp/B0C7ZPZ214/ref=sr_1_4?crid=2SHDEFC0N69ZV&dib=eyJ2IjoiMSJ9.rZUOhTY8cDBy-wbn_BU8KBTcfiNrMw6xyA0A3JQUoiRfNJQSJAh1eZ8m5vh65m5J.h0pbxsaEiqoLijBjxzKqgwTJ42O1dUlcqAEtnxugZRA&dib_tag=se&keywords=mxuteuk%2B620PCS&qid=1742610488&s=industrial&sprefix=mxuteuk%2B620pcs%2Cindustrial%2C147&sr=1-4&th=1) were used for assembly.
+
+3) Heat inset threaded inserts of the size M3x4mmx4.2mm were used on the case using a kit [such as this one](https://www.amazon.com/dp/B0CNWJR455?ref_=ppx_hzsearch_conn_dt_b_fed_asin_title_1&th=1).
+
+---
 
 ## KIT PURCHASE
 
