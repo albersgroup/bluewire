@@ -26,6 +26,10 @@ The MQTT publishers set the 'retain' flag on the messages to ensure that when cl
 
 Use your team - multiple disciplines of engineering particpated in this project.  Electrical, Software, Mechanical, plus a touch of all-around Linux/dev-ops are all needed at times.  If you find a single engineer that can take this repository and stand up the 4 aspects listed in the project overview, you've got some of the most unique 5% of talent in the top 20% of engineers out there.  What's even better is when a person like that can work with a team to accelerate and develop others.  We hope this project helps activate that kind of teamwork and sharpens all engineers involved.
 
+## EXTENDING TO A SOLUTION
+
+This is a proof of concept.  It should spark ideas.  What if you could have a wireless control panel that interacted with your test domain with design, software, and hardware all connected?  What would you want?  Three knobs, five buttons, and a display?  With basic MBSE toolset familiarity, you are a few hours of work away from having that in a design model representing that using what's provided here, connected to any number of topics and messages for monitoring and control.  Integration with software and hardware can move in parallel with design.
+
 ## HARDWARE BOM
 * [ESP-32 Microcontroller](https://www.amazon.com/gp/product/B0D8T53CQ5/ref=ppx_od_dt_b_asin_title_s02?ie=UTF8&psc=1)
 * [Rotary Encoder Module](https://www.dfrobot.com/product-2575.html?srsltid=AfmBOooL40vc9hlK62E8fBJGLit5WPTY3ZMIfle7tOmoT5yqemdEWzI3)
