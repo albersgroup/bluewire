@@ -24,6 +24,10 @@ The MQTT publishers set the 'retain' flag on the messages to ensure that when cl
 
 ## INTEGRATION ENGINEERING
 
+This project started with a simple definition so we could jump right in and start building and failing.  With each failure, we learn and move forward in a better way.  Learning on projects like this is what keeps us sharp and ready to solve more complex problems.  The pace of 'ah-ha' moments when we are able to make progress and not stay stuck for long is what keeps us motivated.  Sometimes complex problems are grueling - that's where we maintain side-projects like this to break up the grind.
+
+Consider this repository an invitation to jump in and particpate with us.  We'd like to know what you're working on and how we can adapt this solution (or come up with a new one) to apply to new problems.
+
 Use your team - multiple disciplines of engineering particpated in this project.  Electrical, Software, Mechanical, plus a touch of all-around Linux/dev-ops are all needed at times.  If you find a single engineer that can take this repository and stand up the 4 aspects listed in the project overview, you've got some of the most unique 5% of talent in the top 20% of engineers out there.  What's even better is when a person like that can work with a team to accelerate and develop others.  We hope this project helps activate that kind of teamwork and sharpens all engineers involved.
 
 ## EXTENDING TO A SOLUTION
