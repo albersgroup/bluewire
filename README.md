@@ -49,6 +49,8 @@ This is a proof of concept.  It should spark ideas.  What if you could have a wi
 
 3) Heat inset threaded inserts of the size M3x4mmx4.2mm were used on the case using a kit [such as this one](https://www.amazon.com/dp/B0CNWJR455?ref_=ppx_hzsearch_conn_dt_b_fed_asin_title_1&th=1).
 
+4) If you buy the parts listed above, you may need a USB-A to USB-C power cable.  Initial versions of our prototypes used ESP-32 kits with the micro USB port and the included power cable with the linked battery kit was able to be used.  Purchase an adapter or a separate cable (or find one you have lying around) if you plan to buy the exact parts listed.  Better yet, solder on some headers to the battery shield and wire the power directly into the microcontroller.
+
 ---
 
 ## KIT PURCHASE
