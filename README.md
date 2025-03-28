@@ -70,8 +70,8 @@ The unassembled kit included in options 1 and 3 include a wire wrap tool along w
 * Reference STL files in [Case Design directory](/hardware_case/)
 * Purchase parts referenced in HARDWARE BOM section above
 * TODO assembly
-* TODO wiring
 
+### WIRING DIAGRAM
 ![image](https://github.com/user-attachments/assets/1c6e8f52-5bc6-47e6-a424-fde3df781165)
 
 
