@@ -41,15 +41,17 @@ This is a proof of concept.  It should spark ideas.  What if you could have a wi
 * [Battery](https://www.amazon.com/dp/B0CDRBR2M1?ref_=ppx_hzsearch_conn_dt_b_fed_asin_title_6)
 
 ---
-**NOTE:**
+**NOTES:**
 
-1) The electronic hardware was connected solderlessly using 30 AWG wire ('blue wire') and a wire-wrapping tool.
+1) The electronic hardware was connected solderlessly using 30 AWG wire ('blue wire') and a wire-wrapping tool.  You will need these for assembly or other means of connecting the male header pins on the boards.
 
-2) M3x16mm screws [from a kit similar to this one](https://www.amazon.com/mxuteuk-Metric-Screws-Suitable-Printer/dp/B0C7ZPZ214/ref=sr_1_4?crid=2SHDEFC0N69ZV&dib=eyJ2IjoiMSJ9.rZUOhTY8cDBy-wbn_BU8KBTcfiNrMw6xyA0A3JQUoiRfNJQSJAh1eZ8m5vh65m5J.h0pbxsaEiqoLijBjxzKqgwTJ42O1dUlcqAEtnxugZRA&dib_tag=se&keywords=mxuteuk%2B620PCS&qid=1742610488&s=industrial&sprefix=mxuteuk%2B620pcs%2Cindustrial%2C147&sr=1-4&th=1) were used for assembly.
+2) M3x16mm screws and other assorted sizes with nuts [from a kit similar to this one](https://www.amazon.com/mxuteuk-Metric-Screws-Suitable-Printer/dp/B0C7ZPZ214/ref=sr_1_4?crid=2SHDEFC0N69ZV&dib=eyJ2IjoiMSJ9.rZUOhTY8cDBy-wbn_BU8KBTcfiNrMw6xyA0A3JQUoiRfNJQSJAh1eZ8m5vh65m5J.h0pbxsaEiqoLijBjxzKqgwTJ42O1dUlcqAEtnxugZRA&dib_tag=se&keywords=mxuteuk%2B620PCS&qid=1742610488&s=industrial&sprefix=mxuteuk%2B620pcs%2Cindustrial%2C147&sr=1-4&th=1) were used for assembly.
 
 3) Heat inset threaded inserts of the size M3x4mmx4.2mm were used on the case using a kit [such as this one](https://www.amazon.com/dp/B0CNWJR455?ref_=ppx_hzsearch_conn_dt_b_fed_asin_title_1&th=1).
 
 4) If you buy the parts listed above, you may need a USB-A to USB-C power cable.  Initial versions of our prototypes used ESP-32 kits with the micro USB port and the included power cable with the linked battery kit was able to be used.  Purchase an adapter or a separate cable (or find one you have lying around) if you plan to buy the exact parts listed.  Better yet, solder on some headers to the battery shield and wire the power directly into the microcontroller.
+
+5) Have a dremel on-hand. Different 3D printers will have different tolerances. Even re-ordering the same ESP-32 boards, we have had differences in alignment. Sometimes the legs or skeleton case needs to be modified.  Other times, the plastic portions of the headers on the microcontroller interfere with the nuts. Expect modifications to be necessary and enjoy the solvable problems you find along the way.
 
 ---
 
@@ -61,18 +63,21 @@ This is a proof of concept.  It should spark ideas.  What if you could have a wi
 * Option 2: pre-assembled kit
 * Option 3: unassembled + pre-assembled kit (2 kits total) + 2 engineering consulting sessions with our team
 
-The unassembled kit included in options 1 and 3 include a wire wrap tool along with enough 30 AWG wire to assemble the kit.  Threaded inserts inset in the case material for kits for ease of assembly.  The kits come with the necessary connecting hardware.
+The unassembled kit included in options 1 and 3 require a wire wrap tool along with enough 30 AWG wire to assemble the kit.  Threaded inserts are inset in the case material for kits for ease of assembly.  The kits come with the necessary connecting hardware.  We've done some fit-checks, but be aware that modifications may be necessary.  See note 5 above.
 
 ## ASSEMBLY
 ![project bluewire](img/bluewire_assembled.jpg)
 *rev1 of the project bluewire case*
 
+Start from a purchased kit 
 * Reference STL files in [Case Design directory](/hardware_case/)
 * Purchase parts referenced in HARDWARE BOM section above
-* TODO assembly
+* Review the NOTES section and make sure you have the parts necessary for assembly.
 
-### WIRING DIAGRAM
-![image](https://github.com/user-attachments/assets/1c6e8f52-5bc6-47e6-a424-fde3df781165)
+### Assembly Instructions
+
+### Wiring Diagram
+![wiring diagram](/img/bluewire_wiring_diagram.png)
 
 
 ## TUTORIAL
