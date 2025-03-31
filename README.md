@@ -77,7 +77,7 @@ Start from a purchased kit
 ### Assembly Instructions
 
 ### Wiring Diagram
-![wiring diagram](/img/bluewire_wiring_diagram.png)
+![wiring diagram](/img/bluewire_wiring_diagram_new.png)
 
 
 ## TUTORIAL
