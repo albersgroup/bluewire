@@ -6,7 +6,7 @@ To execute the ruby scripts, you need a version of ruby installed.  On mac or li
 
 From the scripts in this [Software Control directory](/control_software/), edit and run the two pubsish scripts and then the monitor script.
 
-Replace 'company/name' in the scripts with the name of your company and project (e.g., 'acme/abc' for project abc at company acme).
+Modify the [config file](/control_software/config.yml) with the name of your company and project.
 
 Execute the scripts directly (after installing the 'mqtt' gem)
 ```console
