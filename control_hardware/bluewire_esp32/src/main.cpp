@@ -37,6 +37,8 @@ String providedSSID, providedPassword, company, project;
 unsigned long lastPublishTime = 0;
 bool control = false;
 
+bool apModeActive = false;
+
 // Terminal-style HTML
 const char *form_html = R"rawliteral(
 <!DOCTYPE html>
@@ -164,6 +166,7 @@ void handleFormSubmit() {
 }
 
 void startAPMode() {
+  apModeActive = true;
   WiFi.softAP(apSSID, apPassword);
   delay(100);
 
@@ -298,10 +301,23 @@ unsigned long buttonHoldStart = 0;
 bool buttonIsHeld = false;
 bool buttonHeldResetTriggered = false;
 
+unsigned long lastBlinkTime = 0;
+int blinkStep = 0;
+const int blinkMax = 10;
+
 void loop() {
   server.handleClient();
   dnsServer.processNextRequest();
   mqtt.loop();
+
+  if (apModeActive) {
+    if (millis() - lastBlinkTime > 300) {  // Change interval as needed
+      int value = (blinkStep % blinkMax) * 100;
+      sensor.setEncoderValue(value);
+      blinkStep++;
+      lastBlinkTime = millis();
+    }
+  }
 
   // ========== Track long press with detectButtonDown() + encoder value ==========
   static bool lastButtonDown = false;
