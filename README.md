@@ -96,9 +96,11 @@ Please see: https://test.mosquitto.org/ for more information.
 
 #### AWS MQTT Broker
 
-Configure and deploy an MQTT broker using a service such as AWS ECS or similar.  An example tutorial is linked below:
+Configure and deploy an MQTT broker using a service such as AWS ECS or similar cloud service.  An example tutorial is linked below:
 
 https://www.atom8.ai/blog/how-to-deploy-mqtt-broker-using-eclipse-mosquitto-on-amazon-ecs
+
+You can also configure AWS IoT Core with a Thing to accomplish it.  We have tested this on the software side and it's in-work on the ESP-32.  See the software control section below for more detailed information.
 
 ### Software Control
 

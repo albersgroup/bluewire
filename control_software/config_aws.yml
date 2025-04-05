@@ -1,0 +1,10 @@
+mqtt:
+  host: a3i39je0e3i5v2-ats.iot.us-west-1.amazonaws.com
+  port: 8883
+  cert: secure/certificate.pem.crt
+  key: secure/private.pem.key
+  ca: secure/AmazonRootCA1.pem
+
+topic:
+  company: albers
+  project: bluewire
