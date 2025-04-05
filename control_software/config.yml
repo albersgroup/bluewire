@@ -1,0 +1,7 @@
+mqtt:
+  host: test.mosquitto.org
+  port: 1883
+
+topic:
+  company: mycompany
+  project: myproject
