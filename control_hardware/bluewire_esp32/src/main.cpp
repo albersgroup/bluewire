@@ -32,22 +32,23 @@ const char* HARD_CODED_DEVICE_CERT = "";
 const char* HARD_CODED_PRIVATE_KEY = "";
 
 // Uncomment the following lines to use hardcoded certificates
+// and insert the certificates between the BEGIN and END lines.
 
 // const char* HARD_CODED_ROOT_CA = R"EOF(
 // -----BEGIN CERTIFICATE-----
-// <leave empty or paste your AmazonRootCA1.pem>
+
 // -----END CERTIFICATE-----
 // )EOF";
   
 // const char* HARD_CODED_DEVICE_CERT = R"KEY(
 // -----BEGIN CERTIFICATE-----
-// <leave empty or paste your device certificate>
+
 // -----END CERTIFICATE-----
 // )KEY";
 
 // const char* HARD_CODED_PRIVATE_KEY = R"KEY(
 // -----BEGIN RSA PRIVATE KEY-----
-// <leave empty or paste your device private key>
+
 // -----END RSA PRIVATE KEY-----
 // )KEY";
 
@@ -240,7 +241,9 @@ void handleFormSubmit() {
     saveCerts(form_cert, form_key, form_ca);
   }
 
-  bool awsMode = server.arg("aws_mode") == "on";
+  bool awsMode = server.arg("aws_iot_mode") == "on";
+  Serial.print("AWS IoT checkbox checked? ");
+  Serial.println(awsMode ? "true" : "false");
   saveCredentials(providedSSID, providedPassword, company, project, awsMode);
   awsIotMode = awsMode;
 
@@ -289,15 +292,9 @@ void connectToMQTT() {
   int MQTT_BROKER_PORT;
 
   if (awsIotMode) {
-    MQTT_BROKER_ADDRESS = "your-aws-endpoint.iot.us-east-1.amazonaws.com";
+    MQTT_BROKER_ADDRESS = "a3i39je0e3i5v2-ats.iot.us-west-1.amazonaws.com";
     MQTT_BROKER_PORT = 8883;
-    // TODO: Load certs and use WiFiClientSecure (covered next)
-  } else {
-    MQTT_BROKER_ADDRESS = "test.mosquitto.org";
-    MQTT_BROKER_PORT = 1883;
-  }
 
-  if (awsIotMode) {
     loadCerts(); // Always try to load stored certs first
 
     const char* ca_cert   = strlen(HARD_CODED_ROOT_CA)     > 10 ? HARD_CODED_ROOT_CA     : storedRootCA.c_str();
@@ -309,6 +306,9 @@ void connectToMQTT() {
     secureNetwork.setPrivateKey(private_key);
     mqtt.begin(MQTT_BROKER_ADDRESS, MQTT_BROKER_PORT, secureNetwork);
   } else {
+    MQTT_BROKER_ADDRESS = "test.mosquitto.org";
+    MQTT_BROKER_PORT = 1883;
+
     mqtt.begin(MQTT_BROKER_ADDRESS, MQTT_BROKER_PORT, network);
   }
   mqtt.onMessage(messageHandler);
@@ -322,7 +322,13 @@ void connectToMQTT() {
   Serial.println();
 
   if (mqtt.connected()) {
-    Serial.println("MQTT connected.");
+    Serial.println("Initializing MQTT...");
+    Serial.print("Broker address: ");
+    Serial.println(MQTT_BROKER_ADDRESS);
+    Serial.print("Port: ");
+    Serial.println(MQTT_BROKER_PORT);
+    Serial.print("AWS IoT Mode: ");
+    Serial.println(awsIotMode ? "true" : "false");
     mqtt.subscribe(subscribeTopic.c_str());
   } else {
     Serial.println("Failed to connect to MQTT broker.");
@@ -341,7 +347,9 @@ void sendToMQTT() {
   snprintf(messageBuffer, sizeof(messageBuffer), "%u", sensorValue); // Convert to string
 
   mqtt.publish(valuePublishTopic.c_str(), messageBuffer, sizeof(messageBuffer), true);
-  Serial.println("Sent value to MQTT:");
+  Serial.print("Published to topic: ");
+  Serial.println(valuePublishTopic);
+  Serial.print("Sent value to MQTT: ");
   Serial.println(messageBuffer);
   int quality = getSignalQuality(WiFi.RSSI());
   Serial.print("Signal quality: ");
@@ -367,7 +375,7 @@ void checkResetButtonHold() {
   Serial.println("Hold the encoder button now to reset Wi-Fi credentials...");
 
   int heldTime = 0;
-  const int resetHoldTime = 5000; // 5 seconds
+  const int resetHoldTime = 2000; // 2 seconds
 
   while (heldTime < resetHoldTime) {
     if (!sensor.detectButtonDown()) {
@@ -401,6 +409,8 @@ void setup() {
 
   String ssid, pass, comp, proj;
   if (loadCredentials(ssid, pass, comp, proj)) {
+    Serial.print("AWS IoT Mode (loaded): ");
+    Serial.println(awsIotMode ? "true" : "false");
     Serial.println("Found saved Wi-Fi credentials. Attempting to connect...");
     WiFi.begin(ssid.c_str(), pass.c_str());
 
@@ -474,7 +484,7 @@ void loop() {
       // User turned knob, cancel the hold
       buttonIsHeld = false;
       buttonHoldStart = 0;
-    } else if (millis() - buttonHoldStart >= 5000 && !buttonHeldResetTriggered) {
+    } else if (millis() - buttonHoldStart >= 2000 && !buttonHeldResetTriggered) {
       Serial.println("Button held 5s. Clearing credentials and restarting.");
       buttonHeldResetTriggered = true;
 
@@ -503,7 +513,9 @@ void loop() {
       control = true;
       char messageBuffer[100] = "REMOTE";
       mqtt.publish(controlPublishTopic.c_str(), messageBuffer, sizeof(messageBuffer), true);
-      Serial.println("Button pressed. Sent control message.");
+      Serial.print("Published to topic: ");
+      Serial.println(controlPublishTopic);
+      Serial.print("Button pressed. Sent control message: ");
       Serial.println(messageBuffer);
     }
 
