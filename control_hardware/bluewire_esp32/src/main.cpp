@@ -4,6 +4,7 @@
  * some code modified from: https://github.com/DFRobot/DFRobot_VisualRotaryEncoder
  */
 #include <WiFi.h>
+#include <WiFiClientSecure.h>
 #include <WebServer.h>
 #include <DNSServer.h>
 #include <MQTTClient.h>
@@ -14,6 +15,7 @@
 WebServer server(80);
 DNSServer dnsServer;
 WiFiClient network;
+WiFiClientSecure secureNetwork;
 MQTTClient mqtt(256);
 Preferences prefs;
 
@@ -24,9 +26,34 @@ DFRobot_VisualRotaryEncoder_I2C sensor(0x54, &Wire);
 const char *apSSID = "bluewire_setup";
 const char *apPassword = "bluewire1234";
 
+// Leave these blank (e.g., "") to load from web form instead
+const char* HARD_CODED_ROOT_CA = "";
+const char* HARD_CODED_DEVICE_CERT = "";
+const char* HARD_CODED_PRIVATE_KEY = "";
+
+// Uncomment the following lines to use hardcoded certificates
+
+// const char* HARD_CODED_ROOT_CA = R"EOF(
+// -----BEGIN CERTIFICATE-----
+// <leave empty or paste your AmazonRootCA1.pem>
+// -----END CERTIFICATE-----
+// )EOF";
+  
+// const char* HARD_CODED_DEVICE_CERT = R"KEY(
+// -----BEGIN CERTIFICATE-----
+// <leave empty or paste your device certificate>
+// -----END CERTIFICATE-----
+// )KEY";
+
+// const char* HARD_CODED_PRIVATE_KEY = R"KEY(
+// -----BEGIN RSA PRIVATE KEY-----
+// <leave empty or paste your device private key>
+// -----END RSA PRIVATE KEY-----
+// )KEY";
+
 // MQTT config
-const char MQTT_BROKER_ADRRESS[] = "test.mosquitto.org";
-const int MQTT_PORT = 1883;
+// const char MQTT_BROKER_ADRRESS[] = "test.mosquitto.org";
+// const int MQTT_PORT = 1883;
 const char MQTT_CLIENT_ID[] = "esp32-test-client";
 String valuePublishTopic;
 String controlPublishTopic;
@@ -38,6 +65,8 @@ unsigned long lastPublishTime = 0;
 bool control = false;
 
 bool apModeActive = false;
+
+bool awsIotMode = false;
 
 // Terminal-style HTML
 const char *form_html = R"rawliteral(
@@ -80,6 +109,12 @@ const char *form_html = R"rawliteral(
 
     <label for="password">Password:</label>
     <input type="password" id="password" name="password" required>
+    <div style="margin: 10px 0;">
+      <label style="display: inline-flex; align-items: center;">
+        <input type="checkbox" onclick="togglePassword()" style="margin-right: 8px;">
+        Show password
+      </label>
+    </div>
 
     <label for="company">Company:</label>
     <input type="text" id="company" name="company">
@@ -87,7 +122,38 @@ const char *form_html = R"rawliteral(
     <label for="project">Project:</label>
     <input type="text" id="project" name="project">
 
+    <div style="margin: 10px 0;">
+      <label style="display: inline-flex; align-items: center;">
+        <input type="checkbox" id="aws_iot_mode" name="aws_iot_mode" onchange="toggleCertInputs()" style="margin-right: 8px;">
+        Use AWS IoT Core
+      </label>
+    </div>
+
+    <div id="cert-section" style="display: none; margin-top: 20px;">
+      <label for="device_cert">Device Certificate:</label>
+      <textarea id="device_cert" name="device_cert" rows="6" style="width: 100%;"></textarea>
+
+      <label for="device_key">Private Key:</label>
+      <textarea id="device_key" name="device_key" rows="6" style="width: 100%;"></textarea>
+
+      <label for="ca_cert">Root CA:</label>
+      <textarea id="ca_cert" name="ca_cert" rows="6" style="width: 100%;"></textarea>
+    </div>
+
     <input type="submit" value="CONNECT">
+
+    <script>
+      function togglePassword() {
+        const pwField = document.getElementById("password");
+        pwField.type = pwField.type === "password" ? "text" : "password";
+      }
+
+      function toggleCertInputs() {
+        const awsCheckbox = document.getElementById("aws_iot_mode");
+        const certSection = document.getElementById("cert-section");
+        certSection.style.display = awsCheckbox.checked ? "block" : "none";
+      }
+    </script>
   </form>
 </body>
 </html>
@@ -104,18 +170,43 @@ void sendToMQTT();
 bool loadCredentials(String &ssid, String &password, String &company, String &project);
 void saveCredentials(const String& ssid, const String& password, const String& company, const String& project);
 
+String storedRootCA, storedDeviceCert, storedPrivateKey;
+
+int getSignalQuality(int rssi) {
+  if (rssi <= -100) return 0;
+  if (rssi >= -50) return 100;
+  return 2 * (rssi + 100);  // Linear scale
+}
+
+void saveCerts(const String &cert, const String &key, const String &ca) {
+  prefs.begin("aws_certs", false);
+  prefs.putString("cert", cert);
+  prefs.putString("key", key);
+  prefs.putString("ca", ca);
+  prefs.end();
+}
+
+void loadCerts() {
+  prefs.begin("aws_certs", true);
+  storedDeviceCert = prefs.getString("cert", "");
+  storedPrivateKey = prefs.getString("key", "");
+  storedRootCA     = prefs.getString("ca", "");
+  prefs.end();
+}
+
 void buildMQTTTopics() {
   valuePublishTopic   = company + "/" + project + "/hil/value";
   controlPublishTopic = company + "/" + project + "/hil/control";
   subscribeTopic      = company + "/" + project + "/hil/control";
 }
 
-void saveCredentials(const String& ssid, const String& password, const String& company, const String& project) {
+void saveCredentials(const String& ssid, const String& password, const String& company, const String& project, bool aws_mode) {
   prefs.begin("wifi", false);
   prefs.putString("ssid", ssid);
   prefs.putString("password", password);
   prefs.putString("company", company);
   prefs.putString("project", project);
+  prefs.putBool("aws_mode", aws_mode);
   prefs.end();
 }
 
@@ -125,6 +216,7 @@ bool loadCredentials(String &ssid, String &password, String &company, String &pr
   password = prefs.getString("password", "");
   company = prefs.getString("company", "");
   project = prefs.getString("project", "");
+  awsIotMode = prefs.getBool("aws_mode", false);
   prefs.end();
   return (ssid.length() > 0 && password.length() > 0);
 }
@@ -139,8 +231,18 @@ void handleFormSubmit() {
   company = server.arg("company");
   project = server.arg("project");
 
-  saveCredentials(providedSSID, providedPassword, company, project);
-  server.send(200, "text/html", "<h3>Connecting to Wi-Fi...</h3>");
+  String form_cert = server.arg("device_cert");
+  String form_key  = server.arg("device_key");
+  String form_ca   = server.arg("ca_cert");
+
+  // Save only if they're provided
+  if (form_cert.length() > 10 && form_key.length() > 10 && form_ca.length() > 10) {
+    saveCerts(form_cert, form_key, form_ca);
+  }
+
+  bool awsMode = server.arg("aws_mode") == "on";
+  saveCredentials(providedSSID, providedPassword, company, project, awsMode);
+  awsIotMode = awsMode;
 
   delay(1000);
   WiFi.softAPdisconnect(true);
@@ -158,6 +260,7 @@ void handleFormSubmit() {
   if (WiFi.status() == WL_CONNECTED) {
     Serial.println("\nConnected to new Wi-Fi:");
     Serial.println(WiFi.localIP());
+    apModeActive = false;
     initAfterWiFi();
   } else {
     Serial.println("\nFailed to connect.");
@@ -182,7 +285,32 @@ void startAPMode() {
 }
 
 void connectToMQTT() {
-  mqtt.begin(MQTT_BROKER_ADRRESS, MQTT_PORT, network);
+  const char *MQTT_BROKER_ADDRESS;
+  int MQTT_BROKER_PORT;
+
+  if (awsIotMode) {
+    MQTT_BROKER_ADDRESS = "your-aws-endpoint.iot.us-east-1.amazonaws.com";
+    MQTT_BROKER_PORT = 8883;
+    // TODO: Load certs and use WiFiClientSecure (covered next)
+  } else {
+    MQTT_BROKER_ADDRESS = "test.mosquitto.org";
+    MQTT_BROKER_PORT = 1883;
+  }
+
+  if (awsIotMode) {
+    loadCerts(); // Always try to load stored certs first
+
+    const char* ca_cert   = strlen(HARD_CODED_ROOT_CA)     > 10 ? HARD_CODED_ROOT_CA     : storedRootCA.c_str();
+    const char* device_cert = strlen(HARD_CODED_DEVICE_CERT) > 10 ? HARD_CODED_DEVICE_CERT : storedDeviceCert.c_str();
+    const char* private_key  = strlen(HARD_CODED_PRIVATE_KEY) > 10 ? HARD_CODED_PRIVATE_KEY : storedPrivateKey.c_str();
+  
+    secureNetwork.setCACert(ca_cert);
+    secureNetwork.setCertificate(device_cert);
+    secureNetwork.setPrivateKey(private_key);
+    mqtt.begin(MQTT_BROKER_ADDRESS, MQTT_BROKER_PORT, secureNetwork);
+  } else {
+    mqtt.begin(MQTT_BROKER_ADDRESS, MQTT_BROKER_PORT, network);
+  }
   mqtt.onMessage(messageHandler);
   Serial.print("Connecting to MQTT broker");
 
@@ -215,6 +343,10 @@ void sendToMQTT() {
   mqtt.publish(valuePublishTopic.c_str(), messageBuffer, sizeof(messageBuffer), true);
   Serial.println("Sent value to MQTT:");
   Serial.println(messageBuffer);
+  int quality = getSignalQuality(WiFi.RSSI());
+  Serial.print("Signal quality: ");
+  Serial.print(quality);
+  Serial.println("%");
 }
 
 void initAfterWiFi() {
@@ -280,6 +412,7 @@ void setup() {
 
     if (WiFi.status() == WL_CONNECTED) {
       Serial.println("\nConnected to saved Wi-Fi.");
+      apModeActive = false;
       providedSSID = ssid;
       providedPassword = pass;
       company = comp;
