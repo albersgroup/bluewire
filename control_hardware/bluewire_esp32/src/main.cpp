@@ -11,29 +11,22 @@
 #include <DFRobot_VisualRotaryEncoder.h>
 #include <ArduinoJson.h>
 #include <Preferences.h>
+#if __has_include("certs.h")
+  #include "certs.h"
+#else
+  const char* HARD_CODED_ROOT_CA = "";
+  const char* HARD_CODED_DEVICE_CERT = "";
+  const char* HARD_CODED_PRIVATE_KEY = "";
+#endif
 
-WebServer server(80);
-DNSServer dnsServer;
-WiFiClient network;
-WiFiClientSecure secureNetwork;
-MQTTClient mqtt(256);
-Preferences prefs;
+// add a certs.h file in this directory with the following format if you want to use
+// hardcoded certs for AWS IoT Core instead of the web form.
 
-// Sensor config
-DFRobot_VisualRotaryEncoder_I2C sensor(0x54, &Wire);
-
-// Wi-Fi/AP config
-const char *apSSID = "bluewire_setup";
-const char *apPassword = "bluewire1234";
-
-// Leave these blank (e.g., "") to load from web form instead
-const char* HARD_CODED_ROOT_CA = "";
-const char* HARD_CODED_DEVICE_CERT = "";
-const char* HARD_CODED_PRIVATE_KEY = "";
-
-// Uncomment the following lines to use hardcoded certificates
-// and insert the certificates between the BEGIN and END lines.
-
+// certs.h
+// This is a template for the certs.h file.
+// To use, ensure this section is in its own file in this directory.
+// Uncomment all commented lines below and fill in the certs if you want to use hardcoded certs.
+// #pragma once
 // const char* HARD_CODED_ROOT_CA = R"EOF(
 // -----BEGIN CERTIFICATE-----
 
@@ -51,6 +44,20 @@ const char* HARD_CODED_PRIVATE_KEY = "";
 
 // -----END RSA PRIVATE KEY-----
 // )KEY";
+
+WebServer server(80);
+DNSServer dnsServer;
+WiFiClient network;
+WiFiClientSecure secureNetwork;
+MQTTClient mqtt(256);
+Preferences prefs;
+
+// Sensor config
+DFRobot_VisualRotaryEncoder_I2C sensor(0x54, &Wire);
+
+// Wi-Fi/AP config
+const char *apSSID = "bluewire_setup";
+const char *apPassword = "bluewire1234";
 
 // MQTT config
 // const char MQTT_BROKER_ADRRESS[] = "test.mosquitto.org";
